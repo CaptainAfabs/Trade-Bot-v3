@@ -133,6 +133,29 @@ export const api = {
       total_return_pct: number; annualized_return_pct: number;
       max_drawdown_pct: number; annualized_vol_pct: number; sharpe: number | null;
     }>(`/api/backtest/${ticker}?years=${years}`),
+  getPortfolio: (profile_id: number) =>
+    request<{
+      n_positions: number;
+      total_value_usd: number;
+      total_cost_usd: number;
+      total_pnl_usd: number;
+      total_pnl_pct: number;
+      by_sector_pct: Record<string, number>;
+      holdings: Array<{
+        id: number; ticker: string; shares: number; avg_cost_usd: number;
+        current_price_usd: number | null; market_value_usd: number | null;
+        cost_basis_usd: number; pnl_usd: number | null; pnl_pct: number | null;
+        weight_pct: number | null; sector: string | null; notes: string | null;
+      }>;
+    }>(`/api/portfolio/${profile_id}`),
+  addHolding: (h: { profile_id: number; ticker: string; shares: number; avg_cost_usd: number; notes?: string }) =>
+    request<{ id: number }>("/api/portfolio", { method: "POST", body: JSON.stringify(h) }),
+  removeHolding: (id: number) =>
+    request<void>(`/api/portfolio/${id}`, { method: "DELETE" }),
+  monthlyReview: (profile_id: number) =>
+    request<{ review: string; n_entries?: number }>(`/api/journal/${profile_id}/monthly-review`),
+  previewDigest: (profile_id: number) =>
+    `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/email/digest/${profile_id}/preview`,
   listNews: (params: { ticker?: string; min_impact?: number; limit?: number } = {}) => {
     const q = new URLSearchParams();
     if (params.ticker) q.set("ticker", params.ticker);
