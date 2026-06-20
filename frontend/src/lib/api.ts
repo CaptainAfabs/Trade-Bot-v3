@@ -119,4 +119,29 @@ export const api = {
     request<InvestorDetail>(`/api/investors/${slug}`),
   addInvestor: (query: string) =>
     request<Investor>("/api/investors", { method: "POST", body: JSON.stringify({ query }) }),
+  chat: (profile_id: number, message: string) =>
+    request<{ reply: string; stop_reason: string }>("/api/chat", {
+      method: "POST", body: JSON.stringify({ profile_id, message }),
+    }),
+  chatHistory: (profile_id: number) =>
+    request<{ role: string; content: string }[]>(`/api/chat/history/${profile_id}`),
+  clearChat: (profile_id: number) =>
+    request<void>(`/api/chat/history/${profile_id}`, { method: "DELETE" }),
+  backtest: (ticker: string, years = 5) =>
+    request<{
+      ticker: string; start_date: string; end_date: string;
+      total_return_pct: number; annualized_return_pct: number;
+      max_drawdown_pct: number; annualized_vol_pct: number; sharpe: number | null;
+    }>(`/api/backtest/${ticker}?years=${years}`),
+  listNews: (params: { ticker?: string; min_impact?: number; limit?: number } = {}) => {
+    const q = new URLSearchParams();
+    if (params.ticker) q.set("ticker", params.ticker);
+    if (params.min_impact) q.set("min_impact", String(params.min_impact));
+    if (params.limit) q.set("limit", String(params.limit));
+    return request<{
+      id: number; source: string; url: string; title: string;
+      published_at: string | null; tickers: string[];
+      sentiment: number | null; impact: number | null;
+    }[]>(`/api/news?${q}`);
+  },
 };

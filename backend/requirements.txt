@@ -11,3 +11,4 @@ yfinance==0.2.51
 curl_cffi==0.7.4
 pandas==2.2.3
 numpy==2.2.1
+feedparser==6.0.11
