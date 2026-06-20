@@ -50,12 +50,12 @@ def _num(v) -> float | None:
 
 
 def _pct(v) -> float | None:
-    """Many APIs return ratios as decimals (0.25 = 25%). Normalize to percent.
-    If |v| >= 1 we assume it's already a percent."""
+    """FMP and yfinance both return rate-like fields as decimals (0.25 = 25%,
+    and 1.47 = 147% for high-buyback ROEs). Always multiply by 100."""
     f = _num(v)
     if f is None:
         return None
-    return f * 100 if abs(f) < 1 and f != 0 else f
+    return f * 100
 
 
 def build_snapshot(ticker: str) -> StockSnapshot:

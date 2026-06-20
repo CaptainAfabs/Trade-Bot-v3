@@ -41,6 +41,40 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json();
 }
 
+export interface Pillar { name: string; items: Record<string, number | null> }
+
+export interface StockSnapshot {
+  ticker: string;
+  company_name: string | null;
+  sector: string | null;
+  industry: string | null;
+  market_cap_usd: number | null;
+  current_price: number | null;
+  currency: string;
+  pillars: Pillar[];
+  sources: string[];
+  as_of: string;
+}
+
+export interface PillarScore { name: string; score: number | null; weight: number }
+
+export interface CompositeScore {
+  composite: number | null;
+  grade: string;
+  risk: Risk;
+  timeline: Timeline;
+  pillars: PillarScore[];
+  drivers_positive: string[];
+  drivers_negative: string[];
+  support_required: number;
+  note: string | null;
+}
+
+export interface ScoredStock {
+  snapshot: StockSnapshot;
+  score: CompositeScore;
+}
+
 export const api = {
   health: () => request<{ status: string }>("/health"),
   listProfiles: () => request<Profile[]>("/api/profiles"),
@@ -49,5 +83,7 @@ export const api = {
   deleteProfile: (id: number) =>
     request<void>(`/api/profiles/${id}`, { method: "DELETE" }),
   getStock: (ticker: string) =>
-    request<{ ticker: string; note: string }>(`/api/stocks/${ticker}`),
+    request<StockSnapshot>(`/api/stocks/${ticker}`),
+  scoreStock: (ticker: string, risk: Risk, timeline: Timeline) =>
+    request<ScoredStock>(`/api/stocks/${ticker}/score?risk=${risk}&timeline=${timeline}`),
 };
