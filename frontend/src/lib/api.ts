@@ -75,6 +75,34 @@ export interface ScoredStock {
   score: CompositeScore;
 }
 
+export interface Investor {
+  slug: string;
+  display_name: string;
+  kind: "fund" | "politician" | "individual";
+  cik: string | null;
+  bio: string | null;
+  photo_url: string | null;
+  description: string | null;
+}
+
+export interface Holding {
+  name: string;
+  cusip: string | null;
+  cls: string | null;
+  value_usd: number | null;
+  shares: number | null;
+  pct_portfolio: number | null;
+}
+
+export interface InvestorDetail extends Investor {
+  period: string | null;
+  filed: string | null;
+  accession: string | null;
+  total_value_usd: number | null;
+  top_holdings: Holding[];
+  holdings_note: string | null;
+}
+
 export const api = {
   health: () => request<{ status: string }>("/health"),
   listProfiles: () => request<Profile[]>("/api/profiles"),
@@ -86,4 +114,9 @@ export const api = {
     request<StockSnapshot>(`/api/stocks/${ticker}`),
   scoreStock: (ticker: string, risk: Risk, timeline: Timeline) =>
     request<ScoredStock>(`/api/stocks/${ticker}/score?risk=${risk}&timeline=${timeline}`),
+  listInvestors: () => request<Investor[]>("/api/investors"),
+  getInvestor: (slug: string) =>
+    request<InvestorDetail>(`/api/investors/${slug}`),
+  addInvestor: (query: string) =>
+    request<Investor>("/api/investors", { method: "POST", body: JSON.stringify({ query }) }),
 };

@@ -1,0 +1,292 @@
+[
+  {
+    "slug": "buffett-berkshire",
+    "display_name": "Warren Buffett",
+    "kind": "fund",
+    "fund_name": "Berkshire Hathaway",
+    "cik": "0001067983",
+    "description": "Value investor. Buys durable franchises, holds forever. Concentrated book.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Warren_Buffett_KU_Visit.jpg",
+    "bio": "Chairman of Berkshire Hathaway. Compounded book value at ~20% annualized for six decades by buying high-quality businesses at reasonable prices and letting time do the work."
+  },
+  {
+    "slug": "ackman-pershing",
+    "display_name": "Bill Ackman",
+    "kind": "fund",
+    "fund_name": "Pershing Square Capital",
+    "cik": "0001336528",
+    "description": "Activist investor. Big, concentrated positions in mispriced large caps. Loud public theses.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Bill_Ackman_TechCrunch_2010.jpg",
+    "bio": "Founder of Pershing Square. Activist style — buys 5-10% of a company, publishes a thesis, agitates for change. Notable wins: Wendy's, Canadian Pacific, Lowe's. Notable miss: Valeant."
+  },
+  {
+    "slug": "burry-scion",
+    "display_name": "Michael Burry",
+    "kind": "fund",
+    "fund_name": "Scion Asset Management",
+    "cik": "0001649339",
+    "description": "Contrarian short-seller. Made The Big Short famous. Now bets against bubbles big and small.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Michael_Burry_2010.jpg/440px-Michael_Burry_2010.jpg",
+    "bio": "Founder of Scion. Famously called the 2008 housing crash. Reads 10-Ks for fun. Disclosures often include large put-option bets; remember 13F shows notional, not direction."
+  },
+  {
+    "slug": "tepper-appaloosa",
+    "display_name": "David Tepper",
+    "kind": "fund",
+    "fund_name": "Appaloosa Management",
+    "cik": "0001656456",
+    "description": "Distressed-debt and large-cap macro trader. Aggressive, opportunistic.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/David_Tepper.jpg",
+    "bio": "Founder of Appaloosa. Made his career buying bank debt in 2009 when the world thought they were going to zero. Owner of the Carolina Panthers."
+  },
+  {
+    "slug": "loeb-thirdpoint",
+    "display_name": "Daniel Loeb",
+    "kind": "fund",
+    "fund_name": "Third Point",
+    "cik": "0001040273",
+    "description": "Event-driven activist. Famous for combative letters to underperforming CEOs.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Daniel_S._Loeb.jpg/440px-Daniel_S._Loeb.jpg",
+    "bio": "Founder of Third Point. Multi-strategy hedge fund — event-driven, distressed, activism. The pen behind some of the most quotable activist letters in Wall Street history."
+  },
+  {
+    "slug": "wood-ark",
+    "display_name": "Cathie Wood",
+    "kind": "fund",
+    "fund_name": "ARK Invest",
+    "cik": "0001697748",
+    "description": "Thematic growth investor. Concentrated bets on disruptive innovation — AI, genomics, robotics, crypto.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Cathie_Wood_2019.jpg/440px-Cathie_Wood_2019.jpg",
+    "bio": "Founder of ARK Invest. Best known for the ARKK ETF. Bold long-duration bets on transformative tech; transparent daily disclosures of all trades. High volatility, polarizing track record."
+  },
+  {
+    "slug": "druckenmiller-duquesne",
+    "display_name": "Stanley Druckenmiller",
+    "kind": "fund",
+    "fund_name": "Duquesne Family Office",
+    "cik": "0001536411",
+    "description": "Macro trader. Famous for outsized returns with low drawdowns over 30 years.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Stanley_Druckenmiller.jpg/440px-Stanley_Druckenmiller.jpg",
+    "bio": "Ran Soros's Quantum Fund — co-architect of the Black Wednesday GBP trade. ~30% annualized for 30 years at Duquesne, no losing year. Now manages family money."
+  },
+  {
+    "slug": "marks-oaktree",
+    "display_name": "Howard Marks",
+    "kind": "fund",
+    "fund_name": "Oaktree Capital",
+    "cik": "0001604016",
+    "description": "Distressed-debt veteran. Writes the legendary Oaktree Memos.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Howard_Marks_-_Oaktree_-_2018.jpg/440px-Howard_Marks_-_Oaktree_-_2018.jpg",
+    "bio": "Co-founder of Oaktree Capital. Made his name buying high-yield debt before it was respectable. The Oaktree Memos are required reading; second-level thinking is the through-line."
+  },
+  {
+    "slug": "klarman-baupost",
+    "display_name": "Seth Klarman",
+    "kind": "fund",
+    "fund_name": "Baupost Group",
+    "cik": "0001061768",
+    "description": "Margin-of-safety value investor. Holds cash for years if nothing is cheap enough.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Seth_Klarman.png/440px-Seth_Klarman.png",
+    "bio": "Founder of Baupost. Author of Margin of Safety (out-of-print, $1k used). Famously patient — will sit in cash for years rather than pay full price."
+  },
+  {
+    "slug": "icahn-capital",
+    "display_name": "Carl Icahn",
+    "kind": "fund",
+    "fund_name": "Icahn Capital",
+    "cik": "0000921669",
+    "description": "Original activist. Buys big stakes, pushes for breakups, special dividends, board seats.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Carl_Icahn_2013.jpg/440px-Carl_Icahn_2013.jpg",
+    "bio": "Founder of Icahn Enterprises. The archetypal corporate raider turned long-term activist. Targets companies he believes are mismanaged or undervalued."
+  },
+  {
+    "slug": "einhorn-greenlight",
+    "display_name": "David Einhorn",
+    "kind": "fund",
+    "fund_name": "Greenlight Capital",
+    "cik": "0001079114",
+    "description": "Long-short value. Famous shorts: Lehman, Allied Capital, Green Mountain.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/David_Einhorn_at_Sohn_Conference.jpg/440px-David_Einhorn_at_Sohn_Conference.jpg",
+    "bio": "Founder of Greenlight Capital. Forensic accountant by instinct. Famous shorts include Lehman Brothers (2007) and Allied Capital. Donates winnings annually to charity."
+  },
+  {
+    "slug": "dalio-bridgewater",
+    "display_name": "Ray Dalio",
+    "kind": "fund",
+    "fund_name": "Bridgewater Associates",
+    "cik": "0001350694",
+    "description": "Macro fund. Risk-parity, all-weather. Hundreds of positions across equities and ETFs.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ray_Dalio_-_Web_Summit_2018.png/440px-Ray_Dalio_-_Web_Summit_2018.png",
+    "bio": "Founder of Bridgewater, the world's largest hedge fund at its peak. All-weather and Pure Alpha strategies. Author of Principles. Macro-first, systematic, deeply diversified."
+  },
+  {
+    "slug": "simons-renaissance",
+    "display_name": "Jim Simons",
+    "kind": "fund",
+    "fund_name": "Renaissance Technologies",
+    "cik": "0001037389",
+    "description": "Quant pioneer. The Medallion Fund — likely the best-performing fund in history.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/James-Simons-2007.jpg/440px-James-Simons-2007.jpg",
+    "bio": "Mathematician turned quant. Founded Renaissance Technologies. The internal Medallion Fund averaged ~40% net annually for decades. Public 13F shows the slower Institutional Equities fund."
+  },
+  {
+    "slug": "soros-fund",
+    "display_name": "George Soros",
+    "kind": "fund",
+    "fund_name": "Soros Fund Management",
+    "cik": "0001029160",
+    "description": "Reflexivity theorist. Famous for breaking the Bank of England in 1992.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/George_Soros_-_Festival_Economia_2012_02.JPG/440px-George_Soros_-_Festival_Economia_2012_02.JPG",
+    "bio": "Founder of Soros Fund Management. Built one of the great macro track records — the Quantum Fund. Made $1B+ shorting GBP on Black Wednesday. Now primarily a family office focused on philanthropy."
+  },
+  {
+    "slug": "gates-foundation-trust",
+    "display_name": "Bill Gates Foundation Trust",
+    "kind": "fund",
+    "fund_name": "Bill & Melinda Gates Foundation Trust",
+    "cik": "0001166559",
+    "description": "Endowment portfolio managed conservatively for long-horizon philanthropy.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bill_Gates_2017_%28cropped%29.jpg/440px-Bill_Gates_2017_%28cropped%29.jpg",
+    "bio": "The investment trust funding the Gates Foundation. Long-term, conservative allocation with notable concentration in Berkshire-influenced staples and Microsoft."
+  },
+  {
+    "slug": "miller-millerinvestment",
+    "display_name": "Bill Miller",
+    "kind": "fund",
+    "fund_name": "Miller Value Partners",
+    "cik": "0001135730",
+    "description": "Contrarian value, famous for beating the S&P 500 for 15 straight years at Legg Mason.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Bill_Miller_%28investor%29.jpg/440px-Bill_Miller_%28investor%29.jpg",
+    "bio": "Manages Miller Value Partners. The only manager to beat the S&P 500 fifteen calendar years in a row (1991-2005). Long-time Amazon and bitcoin bull."
+  },
+  {
+    "slug": "yass-susquehanna",
+    "display_name": "Jeff Yass",
+    "kind": "fund",
+    "fund_name": "Susquehanna International Group",
+    "cik": "0000936469",
+    "description": "Quant + options market-maker. Game theory roots. Very large 13F due to market-making positions.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Jeff_Yass_TigerLabs.jpg/440px-Jeff_Yass_TigerLabs.jpg",
+    "bio": "Co-founder of SIG. Trader-driven, options-focused. Big positions in TikTok parent ByteDance pre-disposal. 13F often shows market-maker inventory — read carefully."
+  },
+  {
+    "slug": "griffin-citadel",
+    "display_name": "Ken Griffin",
+    "kind": "fund",
+    "fund_name": "Citadel Advisors",
+    "cik": "0001423053",
+    "description": "Multi-strategy giant. Best-performing hedge fund of all time by absolute dollar returns.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Ken_Griffin_2017.jpg/440px-Ken_Griffin_2017.jpg",
+    "bio": "Founder of Citadel and Citadel Securities. Multi-strategy hedge fund — equity, fixed income, commodities, credit, quant. Made $16B in 2022 alone, the largest annual fund gain ever."
+  },
+  {
+    "slug": "cohen-pointseventytwo",
+    "display_name": "Steven Cohen",
+    "kind": "fund",
+    "fund_name": "Point72 Asset Management",
+    "cik": "0001603466",
+    "description": "Stock-picker. Multi-manager platform. Owner of the New York Mets.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Steve_Cohen_at_Robin_Hood_2013_%28cropped%29.jpg/440px-Steve_Cohen_at_Robin_Hood_2013_%28cropped%29.jpg",
+    "bio": "Founder of Point72 (formerly SAC). Multi-manager equity hedge fund. Famous trading floor instinct. Owns the Mets."
+  },
+  {
+    "slug": "robertson-tiger",
+    "display_name": "Julian Robertson",
+    "kind": "fund",
+    "fund_name": "Tiger Management (legacy + Tiger Cubs)",
+    "cik": "0000935607",
+    "description": "Original Tiger fund. Mentored an entire generation of hedge fund founders ('Tiger Cubs').",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Julian_Robertson_AB_2008.jpg/440px-Julian_Robertson_AB_2008.jpg",
+    "bio": "Founder of Tiger Management. Long-short fundamental investor. Seeded a generation of star managers (Coleman, Mandel, Halvorsen, McGuire) collectively called the Tiger Cubs. Passed in 2022."
+  },
+  {
+    "slug": "coleman-tigerglobal",
+    "display_name": "Chase Coleman",
+    "kind": "fund",
+    "fund_name": "Tiger Global Management",
+    "cik": "0001167483",
+    "description": "Tech and internet specialist. Long-term concentrated growth.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Chase_Coleman_III.jpg/440px-Chase_Coleman_III.jpg",
+    "bio": "Founder of Tiger Global. Tiger Cub. Made his career on early bets on internet leaders globally (JD.com, Facebook, Spotify). Aggressive growth/late-stage venture style."
+  },
+  {
+    "slug": "halvorsen-viking",
+    "display_name": "Andreas Halvorsen",
+    "kind": "fund",
+    "fund_name": "Viking Global Investors",
+    "cik": "0001103804",
+    "description": "Long-short equity. Quality compounders. Tiger Cub.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Andreas_Halvorsen.jpg/440px-Andreas_Halvorsen.jpg",
+    "bio": "Co-founder of Viking Global. Tiger Cub. Long-short equity emphasizing quality compounders, deep fundamental work."
+  },
+  {
+    "slug": "ainslie-maverick",
+    "display_name": "Lee Ainslie",
+    "kind": "fund",
+    "fund_name": "Maverick Capital",
+    "cik": "0000901219",
+    "description": "Long-short equity. Tiger Cub.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Lee_Ainslie.jpg/440px-Lee_Ainslie.jpg",
+    "bio": "Founder of Maverick Capital. Tiger Cub. Sector-specialist analyst structure; concentrated long-short equity."
+  },
+  {
+    "slug": "lynch-fmr-archive",
+    "display_name": "Peter Lynch (legacy)",
+    "kind": "individual",
+    "fund_name": "Fidelity Magellan (1977-1990)",
+    "cik": null,
+    "description": "Retired but iconic. 'Invest in what you know'. 29% annualized over 13 years at Magellan.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Peter_Lynch.jpg/440px-Peter_Lynch.jpg",
+    "bio": "Ran Fidelity Magellan 1977-1990, returning ~29% annualized. Author of One Up On Wall Street. Retired from active management, advises Fidelity. No 13F — included as reference profile only."
+  },
+  {
+    "slug": "pelosi-nancy",
+    "display_name": "Nancy Pelosi",
+    "kind": "politician",
+    "fund_name": "U.S. House — CA-11",
+    "cik": null,
+    "description": "Former House Speaker. Highly-followed STOCK Act disclosures, often big-tech and options.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Nancy_Pelosi_2012.jpg/440px-Nancy_Pelosi_2012.jpg",
+    "bio": "U.S. Representative (CA-11), former Speaker. Trades are disclosed via STOCK Act PTRs within 30-45 days. Her husband Paul (a venture investor) makes most filings; the pair are notorious for well-timed mega-cap and options bets."
+  },
+  {
+    "slug": "tuberville-tommy",
+    "display_name": "Tommy Tuberville",
+    "kind": "politician",
+    "fund_name": "U.S. Senate — Alabama",
+    "cik": null,
+    "description": "Senator with notable agricultural and futures trades surfaced by STOCK Act tracking.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Tommy_Tuberville_official_photo.jpg/440px-Tommy_Tuberville_official_photo.jpg",
+    "bio": "U.S. Senator (R-AL). His PTRs have flagged frequent futures and individual-stock activity, including positions in companies with relevant policy exposure."
+  },
+  {
+    "slug": "crenshaw-dan",
+    "display_name": "Dan Crenshaw",
+    "kind": "politician",
+    "fund_name": "U.S. House — TX-02",
+    "cik": null,
+    "description": "House Rep with frequent STOCK Act disclosures.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Dan_Crenshaw_official_portrait%2C_117th_Congress.jpg/440px-Dan_Crenshaw_official_portrait%2C_117th_Congress.jpg",
+    "bio": "U.S. Representative (TX-02). Periodic active trader; PTRs aggregated by Capitol Trades / Quiver."
+  },
+  {
+    "slug": "khanna-ro",
+    "display_name": "Ro Khanna",
+    "kind": "politician",
+    "fund_name": "U.S. House — CA-17",
+    "cik": null,
+    "description": "Silicon Valley district. Disclosures show concentrated tech holdings.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ro_Khanna_Official.jpg/440px-Ro_Khanna_Official.jpg",
+    "bio": "U.S. Representative (CA-17 — Silicon Valley). PTRs are disclosed via the House clerk; book skews to large-cap tech given district focus."
+  },
+  {
+    "slug": "greene-marjorie",
+    "display_name": "Marjorie Taylor Greene",
+    "kind": "politician",
+    "fund_name": "U.S. House — GA-14",
+    "cik": null,
+    "description": "House Rep whose trade timing around policy events has drawn scrutiny.",
+    "photo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Marjorie_Taylor_Greene_117th_U.S_Congress.jpg/440px-Marjorie_Taylor_Greene_117th_U.S_Congress.jpg",
+    "bio": "U.S. Representative (GA-14). PTRs publicly disclosed; multiple instances of trade timing around legislative votes have surfaced in press coverage."
+  }
+]

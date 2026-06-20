@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, profiles, stocks
+from app.api import health, investors, profiles, stocks
 from app.config import settings
 from app.db.database import init_db
 
@@ -32,3 +32,4 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(profiles.router, prefix="/api/profiles", tags=["profiles"])
 app.include_router(stocks.router, prefix="/api/stocks", tags=["stocks"])
+app.include_router(investors.router, prefix="/api/investors", tags=["investors"])

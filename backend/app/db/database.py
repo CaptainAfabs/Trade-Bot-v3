@@ -14,6 +14,29 @@ async def init_db() -> None:
         await db.executescript(schema)
         await db.commit()
         await _seed_default_user(db)
+        await _seed_investors_if_empty(db)
+
+
+async def _seed_investors_if_empty(db: aiosqlite.Connection) -> None:
+    cur = await db.execute("SELECT COUNT(*) FROM investors")
+    (count,) = await cur.fetchone()
+    if count:
+        return
+    import json
+    from pathlib import Path
+    roster_path = Path(__file__).parent.parent / "investors" / "roster.json"
+    if not roster_path.exists():
+        return
+    roster = json.loads(roster_path.read_text(encoding="utf-8"))
+    for inv in roster:
+        await db.execute(
+            """INSERT OR IGNORE INTO investors
+               (slug, display_name, kind, cik, bio, photo_url, description, is_seeded)
+               VALUES (?,?,?,?,?,?,?,1)""",
+            (inv["slug"], inv["display_name"], inv["kind"], inv.get("cik"),
+             inv.get("bio"), inv.get("photo_url"), inv.get("description")),
+        )
+    await db.commit()
 
 
 async def _seed_default_user(db: aiosqlite.Connection) -> None:

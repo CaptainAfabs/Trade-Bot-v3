@@ -35,6 +35,7 @@ export default function RootLayout({
             <nav className="flex items-center gap-6 text-sm text-ink-muted">
               <Link href="/" className="hover:text-brg">Onboard</Link>
               <Link href="/dashboard" className="hover:text-brg">Dashboard</Link>
+              <Link href="/investors" className="hover:text-brg">Investors</Link>
             </nav>
           </div>
         </header>
