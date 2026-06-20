@@ -51,5 +51,21 @@ async def _seed_default_user(db: aiosqlite.Connection) -> None:
     await db.commit()
 
 
-def connect() -> aiosqlite.Connection:
-    return aiosqlite.connect(settings.db_path)
+class _FKConnection:
+    """Wraps aiosqlite.connect to enforce PRAGMA foreign_keys = ON per connection.
+    SQLite resets this PRAGMA each connection, so we set it on every open."""
+    def __init__(self, ctx):
+        self._ctx = ctx
+        self._conn: aiosqlite.Connection | None = None
+
+    async def __aenter__(self) -> aiosqlite.Connection:
+        self._conn = await self._ctx.__aenter__()
+        await self._conn.execute("PRAGMA foreign_keys = ON")
+        return self._conn
+
+    async def __aexit__(self, *a):
+        return await self._ctx.__aexit__(*a)
+
+
+def connect() -> _FKConnection:
+    return _FKConnection(aiosqlite.connect(settings.db_path))
