@@ -8,5 +8,6 @@ python-dotenv==1.0.1
 aiosqlite==0.20.0
 apscheduler==3.11.0
 yfinance==0.2.51
+curl_cffi==0.7.4
 pandas==2.2.3
 numpy==2.2.1
