@@ -18,9 +18,14 @@ from .cache import DiskCache
 _cache = DiskCache("edgar")
 TIMEOUT = 20.0
 
-# SEC requires a descriptive User-Agent with contact info.
+# SEC requires a descriptive User-Agent with contact info per https://www.sec.gov/os/accessing-edgar-data
+# Override via the EDGAR_USER_AGENT env var with your own contact (name + email) when deploying.
+import os as _os
 _HEADERS = {
-    "User-Agent": "stock-advisor (personal-use; adamfabiano18@gmail.com)",
+    "User-Agent": _os.environ.get(
+        "EDGAR_USER_AGENT",
+        "stock-advisor-demo (contact@example.com)",
+    ),
     "Accept-Encoding": "gzip, deflate",
 }
 

@@ -1,16 +1,26 @@
-"""Probe Finimpulse /histories for daily OHLCV."""
+"""Probe Finimpulse /histories for daily OHLCV.
+
+Usage:
+    set FINIMPULSE_API_KEY=...        (Windows PowerShell: $env:FINIMPULSE_API_KEY = '...')
+    python -m tests.probe_finimpulse
+"""
 import json
+import os
+import sys
 from datetime import datetime, timedelta
 
 import httpx
 
-KEY = "live_10b8c30778d4b6e819f14ca22abdb3756e11868637b98ecb15ff4c11ab7"
+KEY = os.environ.get("FINIMPULSE_API_KEY")
+if not KEY:
+    print("FINIMPULSE_API_KEY not set in env — aborting.", file=sys.stderr)
+    sys.exit(1)
+
 H = {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}
 BASE = "https://api.finimpulse.com/v1"
 
-# Try a few histories request shapes
-TODAY = datetime.utcnow().strftime("%Y-%m-%d")
-ONE_YR = (datetime.utcnow() - timedelta(days=365)).strftime("%Y-%m-%d")
+TODAY = datetime.now().strftime("%Y-%m-%d")
+ONE_YR = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
 
 for body in [
     {"symbol": "AAPL"},
