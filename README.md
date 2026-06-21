@@ -12,12 +12,21 @@ Built solo in one week as a portfolio piece.
 
 ## Screenshots
 
-> Drop screenshots into `screenshots/` and they'll render here. Suggested captures:
->
-> - `screenshots/dashboard.png` — main hub with recommendations, portfolio, chat, news
-> - `screenshots/score-nvda.png` — score page showing pillar breakdown + threshold bar
-> - `screenshots/chat.png` — chat panel mid-conversation
-> - `screenshots/investor-buffett.png` — Buffett's 13F holdings page
+**Dashboard — the hub.** Profile chooser, dynamically-generated recommendations sorted by composite score, a quick-lookup card, portfolio, news, and an inline Claude chat that uses tools to ground its answers.
+
+![Dashboard](./screenshots/dashboard.png)
+
+**Score any ticker.** Hero card with a visual threshold bar, strong/weak pillar callouts, the 8-pillar grid, and the full 60+ underlying metrics organized per pillar with traffic-light colors.
+
+![Score NVDA](./screenshots/score-nvda.png)
+
+**Chat with tool use.** Ask "Should I buy NVDA?" — Claude Sonnet 4.6 calls `get_stock_score`, `backtest_buy_hold`, and `list_recent_news`, then synthesizes a profile-aware reply with real numbers, applies the user's max-position rule, and ends with explicit risk caveats. Every figure in the response came from a tool call, not memory.
+
+![Chat](./screenshots/chat.png)
+
+**Famous investors.** 29-name roster of hedge fund managers and politicians. Click any one to see their latest 13F holdings parsed live from SEC EDGAR — Apple at 22%, AmEx at 17%, Coca-Cola at 12%, etc. The Follow button injects their top 25 positions as candidate boosts in your recommendations.
+
+![Buffett 13F](./screenshots/investor-buffett.png)
 
 ## What it does
 

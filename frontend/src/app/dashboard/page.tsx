@@ -310,27 +310,38 @@ function PortfolioCard({ profile }: { profile: Profile }) {
       )}
       {p && p.n_positions > 0 && (
         <>
-          <div className="flex items-baseline justify-between">
-            <div>
-              <div className="text-2xl font-bold text-brg-900 tabular-nums">
-                ${p.total_value_usd.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          {p.n_unvalued === p.n_positions ? (
+            <p className="text-sm text-ink-soft">
+              Valuation pending — the data provider didn&apos;t return prices this fetch. Try again in a minute.
+            </p>
+          ) : (
+            <div className="flex items-baseline justify-between">
+              <div>
+                <div className="text-2xl font-bold text-brg-900 tabular-nums">
+                  ${p.total_value_usd.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </div>
+                <div className="text-[11px] text-ink-soft mt-0.5">
+                  {p.n_positions} positions
+                  {p.n_unvalued > 0 && <span className="text-danger"> · {p.n_unvalued} unvalued</span>}
+                </div>
               </div>
-              <div className="text-[11px] text-ink-soft mt-0.5">{p.n_positions} positions</div>
-            </div>
-            <div className={`text-right ${p.total_pnl_usd >= 0 ? "text-success" : "text-danger"}`}>
-              <div className="text-lg font-semibold tabular-nums">
-                {p.total_pnl_usd >= 0 ? "+" : ""}${p.total_pnl_usd.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              <div className={`text-right ${p.total_pnl_usd >= 0 ? "text-success" : "text-danger"}`}>
+                <div className="text-lg font-semibold tabular-nums">
+                  {p.total_pnl_usd >= 0 ? "+" : ""}${p.total_pnl_usd.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </div>
+                <div className="text-[11px] tabular-nums">{p.total_pnl_pct >= 0 ? "+" : ""}{p.total_pnl_pct.toFixed(1)}%</div>
               </div>
-              <div className="text-[11px] tabular-nums">{p.total_pnl_pct >= 0 ? "+" : ""}{p.total_pnl_pct.toFixed(1)}%</div>
             </div>
-          </div>
+          )}
           <ul className="mt-3 divide-y divide-cream-200 max-h-40 overflow-y-auto">
             {p.holdings.slice(0, 6).map((h) => (
               <li key={h.id} className="py-1.5 flex items-center justify-between text-sm">
                 <span className="font-medium w-14">{h.ticker}</span>
-                <span className="tabular-nums text-ink-muted flex-1 text-right pr-3">${(h.market_value_usd ?? 0).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                <span className="tabular-nums text-ink-muted flex-1 text-right pr-3">
+                  {h.market_value_usd == null ? "—" : `$${h.market_value_usd.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+                </span>
                 <span className={`tabular-nums w-16 text-right ${(h.pnl_pct ?? 0) >= 0 ? "text-success" : "text-danger"}`}>
-                  {h.pnl_pct === null ? "—" : `${h.pnl_pct >= 0 ? "+" : ""}${h.pnl_pct.toFixed(1)}%`}
+                  {h.pnl_pct == null ? "—" : `${h.pnl_pct >= 0 ? "+" : ""}${h.pnl_pct.toFixed(1)}%`}
                 </span>
               </li>
             ))}

@@ -141,6 +141,7 @@ export const api = {
   getPortfolio: (profile_id: number) =>
     request<{
       n_positions: number;
+      n_unvalued: number;
       total_value_usd: number;
       total_cost_usd: number;
       total_pnl_usd: number;

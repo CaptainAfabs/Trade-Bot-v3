@@ -77,13 +77,21 @@ async def list_holdings(profile_id: int) -> list[HoldingRow]:
 
 
 async def portfolio_summary(profile_id: int) -> dict:
+    """Aggregates over positions that successfully fetched a current price.
+    n_unvalued counts positions where the data provider returned no quote
+    (rate limit, delisted, etc.) so the UI can flag 'valuation pending' rather
+    than display misleading -100% P/L."""
     rows = await list_holdings(profile_id)
-    total_value  = sum(h.market_value_usd or 0 for h in rows)
-    total_cost   = sum(h.cost_basis_usd or 0 for h in rows)
-    total_pnl    = total_value - total_cost if total_cost else 0
+    valued = [h for h in rows if h.market_value_usd is not None]
+    n_unvalued = len(rows) - len(valued)
+
+    total_value = sum(h.market_value_usd or 0 for h in valued)
+    total_cost  = sum(h.cost_basis_usd or 0 for h in valued)
+    total_pnl   = total_value - total_cost
     total_pnl_pct = (total_pnl / total_cost * 100) if total_cost else 0
+
     by_sector: dict[str, float] = {}
-    for h in rows:
+    for h in valued:
         key = h.sector or "Unknown"
         by_sector[key] = by_sector.get(key, 0) + (h.market_value_usd or 0)
     sector_pcts = {
@@ -92,6 +100,7 @@ async def portfolio_summary(profile_id: int) -> dict:
     }
     return {
         "n_positions":       len(rows),
+        "n_unvalued":        n_unvalued,
         "total_value_usd":   total_value,
         "total_cost_usd":    total_cost,
         "total_pnl_usd":     total_pnl,
