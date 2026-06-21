@@ -156,6 +156,18 @@ export const api = {
     request<{ review: string; n_entries?: number }>(`/api/journal/${profile_id}/monthly-review`),
   previewDigest: (profile_id: number) =>
     `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/email/digest/${profile_id}/preview`,
+  getRecommendations: (profile_id: number, limit = 15, force_refresh = false) =>
+    request<{
+      profile_id: number; risk: Risk; timeline: Timeline;
+      support_required: number;
+      picks: Array<{
+        ticker: string; name: string | null; sector: string | null;
+        price: number | null; score: number | null; grade: string;
+        clears_threshold: boolean; drivers: string[]; sources: string[];
+      }>;
+      n_cleared: number; n_near_misses: number; universe_size: number;
+      cached: boolean;
+    }>(`/api/recommendations?profile_id=${profile_id}&limit=${limit}${force_refresh ? "&force_refresh=true" : ""}`),
   listNews: (params: { ticker?: string; min_impact?: number; limit?: number } = {}) => {
     const q = new URLSearchParams();
     if (params.ticker) q.set("ticker", params.ticker);

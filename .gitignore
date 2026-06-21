@@ -16,8 +16,9 @@ dist/
 .npm
 .eslintcache
 
-# Data + secrets
-data/
+# Data + secrets (anchor to root so app/data/ is NOT swept up)
+/data/
+/backend/data/
 *.db
 *.db-journal
 *.db-wal

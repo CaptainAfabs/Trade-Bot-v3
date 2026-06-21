@@ -5,7 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from app.api import backtest, chat, email, health, investors, journal, news, portfolio, profiles, stocks
+from app.api import (
+    backtest, chat, email, health, investors, journal, news,
+    portfolio, profiles, recommendations, stocks,
+)
 from app.config import settings
 from app.db.database import connect, init_db
 from app.email.digest import build_and_send_digest
@@ -63,3 +66,4 @@ app.include_router(backtest.router, prefix="/api/backtest", tags=["backtest"])
 app.include_router(portfolio.router, prefix="/api/portfolio", tags=["portfolio"])
 app.include_router(journal.router, prefix="/api/journal", tags=["journal"])
 app.include_router(email.router, prefix="/api/email", tags=["email"])
+app.include_router(recommendations.router, prefix="/api/recommendations", tags=["recommendations"])

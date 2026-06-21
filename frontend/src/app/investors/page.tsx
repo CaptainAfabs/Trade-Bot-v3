@@ -113,14 +113,18 @@ export default function InvestorsPage() {
                 <img
                   src={inv.photo_url}
                   alt={inv.display_name}
+                  referrerPolicy="no-referrer"
                   className="h-16 w-16 rounded-md object-cover bg-cream-200"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.display = "none";
+                    img.nextElementSibling?.classList.remove("hidden");
+                  }}
                 />
-              ) : (
-                <div className="h-16 w-16 rounded-md bg-cream-200 flex items-center justify-center text-brg text-xl font-semibold">
-                  {inv.display_name.slice(0, 1)}
-                </div>
-              )}
+              ) : null}
+              <div className={`h-16 w-16 rounded-md bg-cream-200 flex items-center justify-center text-brg text-xl font-semibold ${inv.photo_url ? "hidden" : ""}`}>
+                {inv.display_name.slice(0, 1)}
+              </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-brg-900 leading-tight group-hover:text-brg-700">{inv.display_name}</h3>
                 <div className="mt-0.5 text-[11px] uppercase tracking-wide text-ink-soft">{KIND_LABELS[inv.kind]}</div>

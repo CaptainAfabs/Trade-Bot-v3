@@ -13,7 +13,7 @@ from typing import Optional
 import pandas as pd
 from pydantic import BaseModel
 
-from app.data import alphavantage_adapter, fmp_adapter, yfinance_adapter
+from app.data import alphavantage_adapter, finimpulse_adapter, fmp_adapter, yfinance_adapter
 
 from . import indicators
 
@@ -62,6 +62,12 @@ def build_snapshot(ticker: str) -> StockSnapshot:
     ticker = ticker.upper().strip()
     sources: list[str] = []
 
+    # PRIMARY: Finimpulse — price, valuation, sector, 52w (cheap + reliable)
+    fim_summary = finimpulse_adapter.get_summary_lite(ticker)
+    if fim_summary:
+        sources.append("finimpulse")
+
+    # FMP fills in margins / ROE / growth / statements / analyst targets
     profile = fmp_adapter.get_profile(ticker)
     quote   = fmp_adapter.get_quote(ticker)
     ratios  = fmp_adapter.get_ratios_ttm(ticker)
@@ -79,6 +85,31 @@ def build_snapshot(ticker: str) -> StockSnapshot:
     yf_info = yfinance_adapter.get_info(ticker)
     if yf_info:
         sources.append("yfinance")
+
+    # Convenience: pretend Finimpulse fields look like FMP profile/quote so the
+    # pick() chain below works without rewriting every branch.
+    if fim_summary:
+        if profile is None:
+            profile = {
+                "companyName": fim_summary.get("display_name"),
+                "sector":      fim_summary.get("sector"),
+                "industry":    fim_summary.get("industry"),
+                "exchange":    None,
+                "marketCap":   fim_summary.get("market_cap"),
+                "beta":        fim_summary.get("beta"),
+                "currency":    fim_summary.get("currency") or "USD",
+                "price":       fim_summary.get("current_price_usd") or fim_summary.get("current_price"),
+            }
+        if quote is None:
+            quote = {
+                "symbol":          ticker,
+                "name":            fim_summary.get("display_name"),
+                "price":           fim_summary.get("current_price_usd") or fim_summary.get("current_price"),
+                "marketCap":       fim_summary.get("market_cap"),
+                "yearHigh":        fim_summary.get("fifty_two_week_high"),
+                "yearLow":         fim_summary.get("fifty_two_week_low"),
+                "volume":          fim_summary.get("average_volume"),
+            }
 
     # Helper to read a key from any of several dicts, first non-null wins
     def pick(*candidates):
@@ -101,15 +132,15 @@ def build_snapshot(ticker: str) -> StockSnapshot:
     currency = pick(profile.get("currency") if profile else None, yf_info.get("currency")) or "USD"
 
     valuation = Pillar(name="valuation", items={
-        "pe_ttm":             _num(pick(ratios.get("priceToEarningsRatioTTM") if ratios else None, yf_info.get("trailingPE"))),
-        "pe_forward":         _num(yf_info.get("forwardPE")),
+        "pe_ttm":             _num(pick(fim_summary.get("valuation_measures_pe_ratio") if fim_summary else None, ratios.get("priceToEarningsRatioTTM") if ratios else None, yf_info.get("trailingPE"))),
+        "pe_forward":         _num(pick(fim_summary.get("valuation_measures_forward_pe_ratio") if fim_summary else None, yf_info.get("forwardPE"))),
         "peg":                _num(pick(ratios.get("priceToEarningsGrowthRatioTTM") if ratios else None, yf_info.get("trailingPegRatio") or yf_info.get("pegRatio"))),
-        "pb":                 _num(pick(ratios.get("priceToBookRatioTTM") if ratios else None, yf_info.get("priceToBook"))),
-        "ps":                 _num(pick(ratios.get("priceToSalesRatioTTM") if ratios else None, yf_info.get("priceToSalesTrailing12Months"))),
+        "pb":                 _num(pick(fim_summary.get("valuation_measures_pb_ratio") if fim_summary else None, ratios.get("priceToBookRatioTTM") if ratios else None, yf_info.get("priceToBook"))),
+        "ps":                 _num(pick(fim_summary.get("valuation_measures_ps_ratio") if fim_summary else None, ratios.get("priceToSalesRatioTTM") if ratios else None, yf_info.get("priceToSalesTrailing12Months"))),
         "ev_ebitda":          _num(pick(metrics.get("evToEBITDATTM") if metrics else None, yf_info.get("enterpriseToEbitda"))),
         "ev_revenue":         _num(pick(metrics.get("evToSalesTTM") if metrics else None, yf_info.get("enterpriseToRevenue"))),
         "p_fcf":              _num(pick(ratios.get("priceToFreeCashFlowRatioTTM") if ratios else None)),
-        "dividend_yield_pct": _pct(pick(ratios.get("dividendYieldTTM") if ratios else None, yf_info.get("dividendYield"))),
+        "dividend_yield_pct": _pct(pick(fim_summary.get("dividend_yield") if fim_summary else None, ratios.get("dividendYieldTTM") if ratios else None, yf_info.get("dividendYield"))),
         "payout_ratio":       _num(pick(ratios.get("dividendPayoutRatioTTM") if ratios else None, yf_info.get("payoutRatio"))),
     })
 
@@ -167,22 +198,29 @@ def build_snapshot(ticker: str) -> StockSnapshot:
         "operating_cashflow_usd": operating_cf,
     })
 
-    # Build technicals from FMP historical EOD (preferred) or yfinance
+    # Build technicals from Finimpulse /histories (preferred) → FMP → yfinance
     closes: list[float] = []
     highs: list[float] = []
     lows: list[float] = []
-    fmp_hist = fmp_adapter.get_history_eod(ticker, light=False)
-    if isinstance(fmp_hist, list) and fmp_hist:
-        # FMP returns newest first; reverse for chronological
-        rows = list(reversed(fmp_hist))
+    fim_hist = finimpulse_adapter.get_histories(ticker)
+    if fim_hist:
+        # Finimpulse returns newest-first; reverse for chronological
+        rows = list(reversed(fim_hist))
         closes = [r["close"] for r in rows if r.get("close") is not None]
         highs  = [r["high"]  for r in rows if r.get("high")  is not None]
         lows   = [r["low"]   for r in rows if r.get("low")   is not None]
     else:
-        yf_hist = yfinance_adapter.get_history(ticker, period="1y")
-        closes = [c for c in (yf_hist.get("Close") or []) if c is not None]
-        highs  = [c for c in (yf_hist.get("High")  or []) if c is not None]
-        lows   = [c for c in (yf_hist.get("Low")   or []) if c is not None]
+        fmp_hist = fmp_adapter.get_history_eod(ticker, light=False)
+        if isinstance(fmp_hist, list) and fmp_hist:
+            rows = list(reversed(fmp_hist))
+            closes = [r["close"] for r in rows if r.get("close") is not None]
+            highs  = [r["high"]  for r in rows if r.get("high")  is not None]
+            lows   = [r["low"]   for r in rows if r.get("low")   is not None]
+        else:
+            yf_hist = yfinance_adapter.get_history(ticker, period="1y")
+            closes = [c for c in (yf_hist.get("Close") or []) if c is not None]
+            highs  = [c for c in (yf_hist.get("High")  or []) if c is not None]
+            lows   = [c for c in (yf_hist.get("Low")   or []) if c is not None]
 
     tech_items: dict[str, float | None] = {"beta": _num(pick(profile.get("beta") if profile else None, yf_info.get("beta")))}
     if len(closes) >= 30:

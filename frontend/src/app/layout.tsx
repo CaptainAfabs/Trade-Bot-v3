@@ -32,9 +32,11 @@ export default function RootLayout({
               />
               <span className="text-lg">Stock Advisor</span>
             </Link>
-            <nav className="flex items-center gap-6 text-sm text-ink-muted">
-              <Link href="/" className="hover:text-brg">Onboard</Link>
+            <nav className="flex items-center gap-5 text-sm text-ink-muted">
               <Link href="/dashboard" className="hover:text-brg">Dashboard</Link>
+              <Link href="/score" className="hover:text-brg">Score</Link>
+              <Link href="/chat" className="hover:text-brg">Chat</Link>
+              <Link href="/news" className="hover:text-brg">News</Link>
               <Link href="/portfolio" className="hover:text-brg">Portfolio</Link>
               <Link href="/investors" className="hover:text-brg">Investors</Link>
             </nav>

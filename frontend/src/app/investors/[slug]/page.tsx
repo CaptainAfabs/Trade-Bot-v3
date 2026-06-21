@@ -31,14 +31,18 @@ export default function InvestorDetailPage() {
           <img
             src={detail.photo_url}
             alt={detail.display_name}
+            referrerPolicy="no-referrer"
             className="h-40 w-40 rounded-xl object-cover bg-cream-200"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              img.style.display = "none";
+              img.nextElementSibling?.classList.remove("hidden");
+            }}
           />
-        ) : (
-          <div className="h-40 w-40 rounded-xl bg-cream-200 flex items-center justify-center text-brg text-5xl font-semibold">
-            {detail.display_name.slice(0, 1)}
-          </div>
-        )}
+        ) : null}
+        <div className={`h-40 w-40 rounded-xl bg-cream-200 flex items-center justify-center text-brg text-5xl font-semibold ${detail.photo_url ? "hidden" : ""}`}>
+          {detail.display_name.slice(0, 1)}
+        </div>
         <div className="flex-1">
           <h1 className="text-3xl font-semibold text-brg-900">{detail.display_name}</h1>
           <div className="mt-1 text-sm text-ink-soft uppercase tracking-wide">{detail.kind}</div>

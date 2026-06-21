@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     alphavantage_api_key: str = ""
     fmp_api_key: str = ""
+    finimpulse_api_key: str = ""
     resend_api_key: str = ""
     email_to: str = ""
     email_from: str = "onboarding@resend.dev"
