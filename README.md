@@ -4,9 +4,20 @@ A personal AI investment assistant. Pick your risk + timeline, and an LLM-driven
 
 Built solo in one week as a portfolio piece.
 
-![tech](https://img.shields.io/badge/python-3.13-blue) ![next](https://img.shields.io/badge/next-16-black) ![claude](https://img.shields.io/badge/AI-Claude%204.6%20%2B%204.5-orange) ![license](https://img.shields.io/badge/license-MIT-green)
+![ci](https://github.com/CaptainAfabs/Trade-Bot-v3/actions/workflows/ci.yml/badge.svg) ![tech](https://img.shields.io/badge/python-3.13-blue) ![next](https://img.shields.io/badge/next-16-black) ![claude](https://img.shields.io/badge/AI-Claude%204.6%20%2B%204.5-orange) ![license](https://img.shields.io/badge/license-MIT-green)
+
+📐 **[ARCHITECTURE.md](./ARCHITECTURE.md)** · 🤖 **[CLAUDE_USAGE.md](./CLAUDE_USAGE.md)** — deep dives on the engineering decisions and how the Claude API is used.
 
 ---
+
+## Screenshots
+
+> Drop screenshots into `screenshots/` and they'll render here. Suggested captures:
+>
+> - `screenshots/dashboard.png` — main hub with recommendations, portfolio, chat, news
+> - `screenshots/score-nvda.png` — score page showing pillar breakdown + threshold bar
+> - `screenshots/chat.png` — chat panel mid-conversation
+> - `screenshots/investor-buffett.png` — Buffett's 13F holdings page
 
 ## What it does
 
