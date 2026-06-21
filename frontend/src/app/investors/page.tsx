@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { api, type Investor } from "@/lib/api";
+import { FollowToggle } from "@/components/followToggle";
 
 const KIND_LABELS: Record<Investor["kind"], string> = {
   fund: "Hedge fund / institution",
@@ -102,12 +103,11 @@ export default function InvestorsPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((inv) => (
-          <Link
+          <div
             key={inv.slug}
-            href={`/investors/${inv.slug}`}
-            className="group rounded-xl border border-cream-300 bg-cream-50 p-4 transition-colors hover:border-brg"
+            className="group rounded-xl border border-cream-300 bg-cream-50 p-4 transition-colors hover:border-brg flex flex-col"
           >
-            <div className="flex items-start gap-3">
+            <Link href={`/investors/${inv.slug}`} className="flex items-start gap-3">
               {inv.photo_url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
@@ -129,9 +129,12 @@ export default function InvestorsPage() {
                 <h3 className="font-semibold text-brg-900 leading-tight group-hover:text-brg-700">{inv.display_name}</h3>
                 <div className="mt-0.5 text-[11px] uppercase tracking-wide text-ink-soft">{KIND_LABELS[inv.kind]}</div>
               </div>
+            </Link>
+            <p className="mt-3 text-sm text-ink-muted line-clamp-3 flex-1">{inv.description}</p>
+            <div className="mt-3 flex justify-end">
+              <FollowToggle slug={inv.slug} size="sm" />
             </div>
-            <p className="mt-3 text-sm text-ink-muted line-clamp-3">{inv.description}</p>
-          </Link>
+          </div>
         ))}
       </div>
 

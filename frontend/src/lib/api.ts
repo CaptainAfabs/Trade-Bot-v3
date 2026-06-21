@@ -38,7 +38,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     cache: "no-store",
   });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-  return res.json();
+  // 204 No Content (e.g. DELETE) has an empty body — don't try to parse it.
+  if (res.status === 204 || res.headers.get("content-length") === "0") {
+    return undefined as T;
+  }
+  const text = await res.text();
+  return (text ? JSON.parse(text) : (undefined as T)) as T;
 }
 
 export interface Pillar { name: string; items: Record<string, number | null> }
@@ -164,10 +169,15 @@ export const api = {
         ticker: string; name: string | null; sector: string | null;
         price: number | null; score: number | null; grade: string;
         clears_threshold: boolean; drivers: string[]; sources: string[];
+        followed_by: string[]; investor_boost: number;
       }>;
       n_cleared: number; n_near_misses: number; universe_size: number;
       cached: boolean;
     }>(`/api/recommendations?profile_id=${profile_id}&limit=${limit}${force_refresh ? "&force_refresh=true" : ""}`),
+  followInvestor: (profile_id: number, slug: string) =>
+    request<Profile>(`/api/profiles/${profile_id}/follow/${slug}`, { method: "POST" }),
+  unfollowInvestor: (profile_id: number, slug: string) =>
+    request<Profile>(`/api/profiles/${profile_id}/follow/${slug}`, { method: "DELETE" }),
   listNews: (params: { ticker?: string; min_impact?: number; limit?: number } = {}) => {
     const q = new URLSearchParams();
     if (params.ticker) q.set("ticker", params.ticker);

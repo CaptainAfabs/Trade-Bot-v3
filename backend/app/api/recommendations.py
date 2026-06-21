@@ -19,6 +19,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
+from app.data import edgar_adapter
 from app.data.cache import DiskCache
 from app.db.database import connect
 from app.profiles.models import Profile
@@ -45,6 +46,8 @@ class Pick(BaseModel):
     clears_threshold: bool
     drivers: list[str]
     sources: list[str] = []
+    followed_by: list[str] = []   # investor slugs that hold this stock
+    investor_boost: float = 0     # how many points were added from follows
 
 
 class RecsResponse(BaseModel):
@@ -145,7 +148,58 @@ async def get_candidates(profile: Profile) -> list[str]:
     return tickers
 
 
-def _score_one(ticker: str, risk, timeline) -> dict[str, Any] | None:
+def _normalize_name(name: str | None) -> str:
+    """Strip noise from issuer names so 'APPLE INC' matches 'Apple Inc.'"""
+    if not name:
+        return ""
+    n = name.upper().replace(".", "").replace(",", "")
+    for suf in [" INC", " CORPORATION", " CORP", " COMPANY", " CO", " LTD",
+                " LLC", " HLDGS", " HOLDINGS", " GROUP", " PLC", " SA", " NV",
+                " AG", " LP"]:
+        if n.endswith(suf):
+            n = n[: -len(suf)]
+    return n.strip()
+
+
+def _followed_holdings_index(profile: Profile) -> dict[str, list[str]]:
+    """For each followed investor, pull their latest 13F and build
+    {normalized_name: [investor_slug, ...]} so we can lookup whether a candidate
+    is held by followed investors."""
+    if not profile.follow_investors:
+        return {}
+    idx: dict[str, list[str]] = {}
+    for slug in profile.follow_investors:
+        # Lookup CIK from DB synchronously (we're in a threadpool worker)
+        import sqlite3
+        from app.config import settings as s
+        try:
+            conn = sqlite3.connect(s.db_path)
+            cur = conn.execute("SELECT cik, kind FROM investors WHERE slug = ?", (slug,))
+            row = cur.fetchone()
+            conn.close()
+        except Exception:
+            continue
+        if not row or not row[0] or row[1] == "politician":
+            continue
+        try:
+            data = edgar_adapter.fetch_13f_holdings(row[0])
+        except Exception:
+            continue
+        if not data:
+            continue
+        for h in data["holdings"][:25]:   # only top 25 — small positions don't earn boost
+            key = _normalize_name(h.get("name"))
+            if key:
+                idx.setdefault(key, []).append(slug)
+    return idx
+
+
+def _score_one(
+    ticker: str,
+    risk,
+    timeline,
+    follow_index: dict[str, list[str]] | None = None,
+) -> dict[str, Any] | None:
     try:
         snap = build_snapshot(ticker)
     except Exception:
@@ -153,17 +207,31 @@ def _score_one(ticker: str, risk, timeline) -> dict[str, Any] | None:
     score = score_snapshot(snap, risk=risk, timeline=timeline)
     if score.composite is None or not snap.company_name or snap.current_price is None:
         return None
+
+    # Investor-follow boost: +6 per followed investor holding this stock, capped at +12
+    boost = 0.0
+    followed_by: list[str] = []
+    if follow_index:
+        key = _normalize_name(snap.company_name)
+        followed_by = list(follow_index.get(key, []))
+        boost = min(len(followed_by) * 6.0, 12.0)
+
+    boosted = min(100.0, score.composite + boost)
     return {
         "ticker":            snap.ticker,
         "name":              snap.company_name,
         "sector":            snap.sector,
         "price":             snap.current_price,
-        "score":             score.composite,
+        "score":             boosted,
         "grade":             score.grade,
-        "clears_threshold":  score.composite >= score.support_required,
-        "drivers":           score.drivers_positive,
+        "clears_threshold":  boosted >= score.support_required,
+        "drivers":           score.drivers_positive + (
+            [f"followed by {', '.join(followed_by)}"] if followed_by else []
+        ),
         "support_required":  score.support_required,
         "sources":           snap.sources,
+        "followed_by":       followed_by,
+        "investor_boost":    boost,
     }
 
 
@@ -210,9 +278,13 @@ async def get_recommendations(
     # 1. Claude generates candidate tickers
     candidates = await get_candidates(profile)
 
-    # 2. Score them all in parallel (FMP/Finimpulse cached per ticker)
+    # 2. Build followed-investor holdings index (cheap — 13Fs are cached)
+    follow_index = await asyncio.to_thread(_followed_holdings_index, profile)
+
+    # 3. Score every candidate in parallel; follow_index adds boost + tags
     results = await asyncio.gather(
-        *[asyncio.to_thread(_score_one, t, profile.risk, profile.timeline) for t in candidates],
+        *[asyncio.to_thread(_score_one, t, profile.risk, profile.timeline, follow_index)
+          for t in candidates],
         return_exceptions=False,
     )
     scored = [r for r in results if r]

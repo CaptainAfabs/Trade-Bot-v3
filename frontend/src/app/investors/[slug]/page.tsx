@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { api, type InvestorDetail } from "@/lib/api";
+import { FollowToggle } from "@/components/followToggle";
 
 export default function InvestorDetailPage() {
   const params = useParams();
@@ -44,10 +45,18 @@ export default function InvestorDetailPage() {
           {detail.display_name.slice(0, 1)}
         </div>
         <div className="flex-1">
-          <h1 className="text-3xl font-semibold text-brg-900">{detail.display_name}</h1>
-          <div className="mt-1 text-sm text-ink-soft uppercase tracking-wide">{detail.kind}</div>
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h1 className="text-3xl font-semibold text-brg-900">{detail.display_name}</h1>
+              <div className="mt-1 text-sm text-ink-soft uppercase tracking-wide">{detail.kind}</div>
+            </div>
+            <FollowToggle slug={detail.slug} />
+          </div>
           {detail.description && <p className="mt-3 italic text-ink-muted">{detail.description}</p>}
           {detail.bio && <p className="mt-3 text-sm leading-relaxed">{detail.bio}</p>}
+          <p className="mt-3 text-xs text-ink-soft">
+            Following adds their top 25 holdings as candidates and gives any matching stock a +6 to +12 boost when scoring for your profile.
+          </p>
         </div>
       </header>
 

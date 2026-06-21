@@ -82,3 +82,41 @@ async def delete_profile(profile_id: int):
     async with connect() as db:
         await db.execute("DELETE FROM profiles WHERE id = ?", (profile_id,))
         await db.commit()
+
+
+@router.post("/{profile_id}/follow/{slug}", response_model=Profile)
+async def follow_investor(profile_id: int, slug: str):
+    async with connect() as db:
+        db.row_factory = lambda c, r: dict(zip([d[0] for d in c.description], r))
+        cur = await db.execute("SELECT * FROM profiles WHERE id = ?", (profile_id,))
+        row = await cur.fetchone()
+        if not row:
+            raise HTTPException(404, "Profile not found")
+        follows = set(json.loads(row["follow_investors"] or "[]"))
+        follows.add(slug)
+        await db.execute(
+            "UPDATE profiles SET follow_investors = ? WHERE id = ?",
+            (json.dumps(sorted(follows)), profile_id),
+        )
+        await db.commit()
+        cur = await db.execute("SELECT * FROM profiles WHERE id = ?", (profile_id,))
+        return _row_to_profile(await cur.fetchone())
+
+
+@router.delete("/{profile_id}/follow/{slug}", response_model=Profile)
+async def unfollow_investor(profile_id: int, slug: str):
+    async with connect() as db:
+        db.row_factory = lambda c, r: dict(zip([d[0] for d in c.description], r))
+        cur = await db.execute("SELECT * FROM profiles WHERE id = ?", (profile_id,))
+        row = await cur.fetchone()
+        if not row:
+            raise HTTPException(404, "Profile not found")
+        follows = set(json.loads(row["follow_investors"] or "[]"))
+        follows.discard(slug)
+        await db.execute(
+            "UPDATE profiles SET follow_investors = ? WHERE id = ?",
+            (json.dumps(sorted(follows)), profile_id),
+        )
+        await db.commit()
+        cur = await db.execute("SELECT * FROM profiles WHERE id = ?", (profile_id,))
+        return _row_to_profile(await cur.fetchone())

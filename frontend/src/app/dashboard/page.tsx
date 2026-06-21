@@ -269,6 +269,11 @@ function RecommendationsRow({ profile }: { profile: Profile }) {
                 </div>
                 <div className="mt-0.5 text-[11px] text-ink-muted truncate" title={p.name ?? ""}>{p.name}</div>
                 <div className="mt-0.5 text-[10px] text-ink-soft">{p.sector}</div>
+                {p.followed_by && p.followed_by.length > 0 && (
+                  <div className="mt-1 text-[10px] text-brg font-medium" title={`Held by: ${p.followed_by.join(", ")}`}>
+                    ★ followed (+{p.investor_boost?.toFixed(0)})
+                  </div>
+                )}
                 {!p.clears_threshold && (
                   <div className="mt-1 text-[10px] text-danger">below threshold</div>
                 )}
